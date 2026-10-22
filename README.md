@@ -4,7 +4,7 @@ An LLM-powered assistant that drafts replies to inbound sales inquiries in Gmail
 
 I built it for a golf simulator dealer, where it runs in production on the company's sales inbox. This repo is a cleaned-up copy: business names, addresses, and IDs come from configuration instead of being hard-coded.
 
-Project Highlights
+## Project Highlights
 
 ~60% reduction in manual email response time: Automated inquiry analysis and draft generation, allowing the team to review, make minor edits, and send responses in seconds.
 
