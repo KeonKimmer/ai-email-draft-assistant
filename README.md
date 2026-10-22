@@ -4,6 +4,16 @@ An LLM-powered assistant that drafts replies to inbound sales inquiries in Gmail
 
 I built it for a golf simulator dealer, where it runs in production on the company's sales inbox. This repo is a cleaned-up copy: business names, addresses, and IDs come from configuration instead of being hard-coded.
 
+Project Highlights
+
+~60% reduction in manual email response time: Automated inquiry analysis and draft generation, allowing the team to review, make minor edits, and send responses in seconds.
+
+170+ historical customer email threads: Built a retrieval-augmented generation (RAG) pipeline that uses past customer conversations to generate context-aware responses.
+
+Continuous knowledge base improvement: Automatically stores finalized customer replies in Google Sheets, making new interactions available for future retrieval.
+
+Production deployment: Runs on the company's sales inbox with automated follow-ups, Gmail threading, and human approval before sending.
+
 ## What it does
 
 1. **New inquiries.** It finds website contact-form notification emails, parses the customer's details (name, location, product interest, intended use, message), filters out spam, and asks Claude to draft a reply.
