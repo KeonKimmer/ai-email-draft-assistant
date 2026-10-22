@@ -1,0 +1,46 @@
+name: Email Draft Assistant
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # GitHub runs scheduled jobs on a best-effort basis
+  workflow_dispatch:          # allow manual trigger from GitHub
+
+# Never let two runs overlap — both could see the same email as new and draft twice
+concurrency:
+  group: email-draft-assistant
+  cancel-in-progress: false
+
+jobs:
+  run-assistant:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Write Google credentials
+        run: |
+          echo "${{ secrets.GOOGLE_CREDENTIALS }}" | base64 -d > credentials.json
+          echo "${{ secrets.GOOGLE_TOKEN }}" | base64 -d > token.json
+
+      - name: Run assistant
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          BUSINESS_NAME: ${{ vars.BUSINESS_NAME }}
+          BUSINESS_DOMAIN: ${{ vars.BUSINESS_DOMAIN }}
+          SIGNER_NAME: ${{ vars.SIGNER_NAME }}
+          SUBJECT_KEYWORD: ${{ vars.SUBJECT_KEYWORD }}
+          START_DATE: ${{ vars.START_DATE }}
+          FORM_SENDER: ${{ vars.FORM_SENDER }}
+          FORM_SENDER_ALT: ${{ vars.FORM_SENDER_ALT }}
+          TEAM_SENDERS: ${{ vars.TEAM_SENDERS }}
+          FROM_EMAIL: ${{ vars.FROM_EMAIL }}
+        run: python assistant.py
